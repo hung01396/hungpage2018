@@ -1,0 +1,46 @@
+﻿@model IEnumerable<hungpage2018.Models.home_img>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create/Home_IMG/0")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.img_href)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.href)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.img_href)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.href)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit/Home_IMG/" + @item.id) |
+            @Html.ActionLink("Delete", "Delete/Home_IMG/" + @item.id, null, new { onclick = "return confirm('確定删除？')" })|
+        </td>
+    </tr>
+    }
+
+</table>

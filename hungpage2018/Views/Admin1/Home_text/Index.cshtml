@@ -1,0 +1,33 @@
+﻿@model IEnumerable<hungpage2018.Models.home_text>
+
+@{
+    ViewBag.Title = "Index2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index2</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.home_text1)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.home_text1)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit/Home_text/" + @item.id) |
+            </td>
+        </tr>
+    }
+
+</table>

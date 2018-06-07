@@ -1,0 +1,71 @@
+﻿@model hungpage2018.Models.users
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section scripts{
+    <style>
+        #login-div {
+            position: relative;
+            width: 450px;
+            border: 1px solid #ccc;
+            margin: 0px auto;
+        }
+
+        td {
+            width: 100px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+}
+
+
+<div id="login-div">
+    @using (Html.BeginForm("Autherize", "Login", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>
+                <td style="text-decoration:underline">Login</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.username)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.username)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>@Html.ValidationMessageFor(model => model.username)</td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.password)</td>
+                <td>@Html.EditorFor(model => model.password)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>@Html.ValidationMessageFor(model => model.password)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td width="200px">
+                    <div id="input"><input type="submit" name="name" value="Login" /></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label class="field-validation-error">@Html.DisplayFor(model => model.LoginErrorMessage)</label>
+                </td>
+            </tr>
+
+        </table>
+    }
+
+</div>

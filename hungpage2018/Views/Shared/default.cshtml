@@ -1,0 +1,332 @@
+﻿
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=0, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    @Styles.Render("~/Mystyle/css")
+    @Scripts.Render("~/Myjs/js")
+
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <title>Template</title>
+
+    <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
+
+    <style>
+        .chatusername {
+            background-color: greenyellow;
+        }
+
+        .chatusermsg {
+            background-color: deepskyblue;
+            height: 50px;
+            overflow: auto;
+        }
+
+        #listofname {
+            height: 100%;
+            overflow: auto;
+        }
+    </style>
+    <script>
+        var chat;
+        var Username = "";
+        var groupName = "";
+
+        $(document).ready(function () {
+
+        });
+        function getname(x) {
+            var name = "div#";
+            name = name + x;
+            getnames = ($(name).attr("value"));
+            var names = "div#msg";
+            names = names + x;
+            $(names).css("background-color", "deepskyblue");
+            $('#chatArea').val('');
+            $('#chatArea').val($(names).text());
+            $("#msgValue2").val('/private[' + getnames + '] ');
+            $('#msgValue2').focus();
+        }
+        function setHeader() {
+            $('#headerArea').fadeOut(1000, function () {
+                $('#headerArea').html('<div class="col-md-3"><h4>Username : </h4></div><div class="col-md-3"><h5>' + Username + '</h5></div><div class="col-md-3"><h4>Group Name : </h4></div><div class="col-md-3"><h5>' + groupName + '</h5></div>');
+                $('#headerArea').fadeIn(1000)
+            });
+        }
+        function addToChatBox(text) {
+            $('#chatArea').val($('#chatArea').val() + text + '\n');
+        }
+        function addAdminChatBox(msg, user) {
+            var name = "div#msg";
+            name = name + user;
+            $(name).append(msg + '<br>\n');
+            var divid = "msg";
+            divid = divid + user;
+            var div = document.getElementById(divid);
+            div.scrollTop = div.scrollHeight + 100;
+            $(name).css("background-color", "yellow");
+            $('#chatArea').val($('#chatArea').val() + msg + '\n');
+            $("#msgValue2").val('/private[' + user + '] ');
+            $('#msgValue2').focus();
+        }
+        function addlistname(text) {
+            $('#listofname').append("<div id='" + text + "' onclick='getname(\"" + text + "\")'  value=" + text + "><div id='name" + text + "' class='chatusername'></div>" + text + "<div id='msg" + text + "' class='chatusermsg'></div></div>\n");
+        }
+        function clearMsgBox() {
+            $('#msgValue').val('');
+            $('#msgValue2').val('');
+        }
+        function clearListBox() {
+            $("#listofname").empty();
+        }
+        function focusMsgBox() {
+            $('#msgValue').focus();
+            $('#msgValue2').focus();
+        }
+        function Connect() {
+            var ss = $("#usermanage").attr("value");;
+            $("#chat-bottom2").attr("onclick", "none");
+            $("#chat-bottom").attr("onclick", "none");
+            if (parseInt($("#usermanage").attr("value")) < 99 || ($("#usermanage").attr("value") == null)) {
+                var mydate = new Date();
+                var time = mydate.getTime();
+                var ran = (Math.random() * (10000)).toString();
+                var now = time + ran;
+                Username = time;
+                groupName = 2;
+            } else {
+                Username = $("#username").attr("value");;
+                groupName = 1;
+            }
+
+
+            $.connection.hub.qs = {
+                "Username": Username,
+                "GroupName": groupName
+            };
+
+            chat = $.connection.chatHub;
+
+            chat.client.ReceiveMessage = function (message) {
+                addToChatBox(message);
+                var div = document.getElementById('chatArea');
+                div.scrollTop = div.scrollHeight;
+            };
+
+            //user SD MSG,Admin接收到的信息
+            chat.client.UserSdMessage = function (message, user) {
+                addAdminChatBox(message, user);
+                var div = document.getElementById('chatArea');
+                div.scrollTop = div.scrollHeight;
+            };
+            chat.client.UserSdMessage2 = function (message, user) {
+                addToChatBox(message);
+                var div = document.getElementById('chatArea');
+                div.scrollTop = div.scrollHeight;
+            };
+
+            //Admin SD MSG,用戶接收到的信息
+            chat.client.AdminSdMessage = function (message) {
+                addToChatBox(message);
+                var div = document.getElementById('chatArea');
+                div.scrollTop = div.scrollHeight;
+            };
+
+            chat.client.ReceiveListNmae = function (name, qty) {
+                if (qty == 0) {
+                    clearListBox();
+                }
+                addlistname(name);
+            };
+
+            chat.client.TakeChatList = function (message) {
+                var list = $.parseJSON(message);
+                $.each(list, function (index, value) {
+                    addToChatBox(value.Username + " : " + value.Content);
+                });
+            };
+            $('#sndBtn').on('click', function () {
+                var message = $('#msgValue').val();
+                chat.server.userSdMessages(message, Username);
+                clearMsgBox();
+                focusMsgBox();
+            });
+            $('#msgValue').on('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    var message = $('#msgValue').val();
+                    chat.server.userSdMessages(message, Username);
+                    clearMsgBox();
+                    focusMsgBox();
+                }
+            });
+            $('#sndBtn2').on('click', function () {
+                var message = $('#msgValue2').val();
+                chat.server.adminSdMessages(message, Username);
+                clearMsgBox();
+                focusMsgBox();
+            });
+            $('#msgValue2').on('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    var message = $('#msgValue2').val();
+                    chat.server.adminSdMessages(message, Username);
+                    clearMsgBox();
+                    focusMsgBox();
+                }
+            });
+
+
+            $.connection.hub.start()
+                .done(function () {
+                    addToChatBox('You have connected to the server..');
+                    setHeader();
+                    focusMsgBox();
+                })
+                .fail(function () {
+                    addToChatBox('You could not have connected to the server.. :(');
+                });
+
+        }
+    </script>
+
+
+</head>
+<body>
+    <div id="header-navigation">
+        <div id="usermanage" style="display:none" value=@Session["userManage"]>@Session["userManage"]</div>
+        <div id="username" style="display:none" value=@Session["userName"]>@Session["userName"]</div>
+        <ul id="top-navigation">
+            @if (Convert.ToInt16(Session["userManage"]) < 99)
+            {
+                <li>
+                    <a href="../../Login/index.html">登入</a>
+                </li>
+            }
+            else
+            {
+
+                <li>
+                    <a href="../../Login/LogOut">登出</a>
+                </li>
+            }
+            <li>
+                <a href="index.html">注刪</a>
+            </li>
+        </ul>
+    </div>
+    <div id="body-include">
+        <div id="header-logo">
+            <img id="logo" src="../../images/Logo.png" alt="" / style="width:300px;height:150px;">
+        </div>
+        <div id="header-information">
+            <div style="border:2px #ccc solid;top:50%;margin:0 auto;transform:translateY(-50%);position: relative;height:100px;border-radius:10px;margin-left:0px auto;background-color:#eee;text-align:center;">注意:這是一個測試網頁</div>
+        </div>
+    </div>
+
+    <div id="type-navigation">
+        <ul id="type-navigation-ul">
+            <li class="current">
+                <a href="index.html">主頁</a>
+            </li>
+            <li>
+                <a href="about.html">公司簡目</a>
+            </li>
+            <li>
+                <a href="classes.html">項目開發</a>
+                <ul>
+                    <li>
+                        <a href="instructors.html">測試</a>
+                    </li>
+                    <li>
+                        <a href="instructors.html">測試</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="contact.html">測試</a>
+            </li>
+            <li>
+                <a href="blog.html">地址</a>
+            </li>
+            <li>
+                <a href="blog.html">地址</a>
+            </li>
+            <li>
+                <a href="blog.html">地址</a>
+            </li>
+            <li>
+                <a href="blog.html">地址</a>
+            </li>
+            <li>
+                <a href="blog.html">地址</a>
+            </li>
+
+        </ul>
+    </div>
+    <div id="body">
+        @RenderBody();
+    </div>
+    <div id="footer">
+        <div>
+            <span>這是一個測試網頁</span>
+            </p>
+        </div>
+    </div>
+    </div>
+    @if (Convert.ToInt16(Session["userManage"]) < 99)
+    {
+        <div id="chat">
+            <div id="chat-information">
+                <div id="chat-top"><img id="msg-close" src="images/mobile/mobile-close.png"></div>
+                <div id="chat-body">
+                    <div id="chatbody" class="container col-md-12">
+                        <textarea disabled="disabled" class="form-control" id="chatArea"></textarea>
+                    </div>
+                </div>
+                <div id="chat-msg">
+                    <div id="msgArea">
+                        <textarea class="form-control" id="msgValue"></textarea>
+                    </div>
+                    <div id="UserSdArea">
+                        <input type="submit" class="form-control btn-info" id="sndBtn" value="Send" />
+                    </div>
+                </div>
+            </div>
+            <div id="chat-bottom" onclick="Connect()">查詢(聊天)</div>
+
+        </div>
+    }
+    else
+    {
+        <div id="chat2">
+            <div id="chat-information2">
+                <div id="chat-top2"><img id="msg-close2" src="images/mobile/mobile-close.png"></div>
+                <div id="chat-body2">
+                    <div id="chat-left" class="container col-md-12">
+                        <div id="listofname"></div>
+                    </div>
+                    <div id="chat-right" class="container col-md-12">
+                        <textarea disabled="disabled" class="form-control" id="chatArea"></textarea>
+                    </div>
+                </div>
+                <div id="chat-msg2">
+                    <div id="msgArea2">
+                        <textarea class="form-control" id="msgValue2"></textarea>
+                    </div>
+                    <div id="UserSdArea2">
+                        <input type="submit" class="form-control btn-info" id="sndBtn2" value="Send" />
+                    </div>
+                </div>
+            </div>
+            <div id="chat-bottom2" onclick="Connect()">管理(聊天)</div>
+        </div>
+    }
+
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

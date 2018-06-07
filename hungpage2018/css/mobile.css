@@ -1,0 +1,228 @@
+﻿/* Website template by freewebsitetemplates.com */
+@media only screen and (max-width : 750px) {
+    html {
+        -webkit-text-size-adjust: none;
+    }
+
+    #header-navigation {
+        margin-top: 0px;
+        margin-left: 0px;
+        padding-right: 0px;
+        background-color: #4BAFDA;
+        width: 100%;
+        height: 30px;
+    }
+
+    #top-navigation {
+        margin-right: 0px;
+    }
+
+        #top-navigation li {
+            line-height: 30px;
+            font-size: 14pt;
+            background-color: #4BAFDA;
+            text-decoration: none;
+            display: inline-block;
+            border: 10px;
+            margin-right: 10px;
+            overflow: visible;
+            float: right;
+            text-align: center;
+            padding-bottom: 0px;
+        }
+
+            #top-navigation li a {
+                color: #ffffff;
+            }
+
+    #body-include {
+        width: 100%;
+        background: pink;
+        margin: 0px auto;
+        overflow: hidden;
+    }
+
+    #body {
+        float: center;
+        background: #ffffff;
+        margin-left: auto;
+        overflow: hidden;
+    }
+
+
+
+
+    #header-logo {
+        text-align: center;
+        float: none;
+        margin: 0px auto;
+        width: 300px;
+        height: 150px;
+        position: relative;
+        background: pink;
+    }
+
+    #header-information {
+        text-align: center;
+        float: none;
+        margin: 0px auto;
+        width: 440px;
+        position: relative;
+        background: pink;
+    }
+
+    #type-navigation {
+        padding-top: 0px;
+        margin-left: 0px;
+        line-height: 0px;
+        height: 0px;
+        margin: auto;
+    }
+
+
+    #mobile-navigation {
+        background: url(../../../../../../images/mobile/mobile-menu.png) no-repeat;
+        display: block;
+        height: 30px;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        left: 0;
+        top: 0px;
+        width: 30px;
+        z-index: 1000;
+    }
+
+    ul#type-navigation-ul {
+        display: none;
+        top: 0px;
+        max-width: 300px;
+        position: absolute;
+        z-index: 1;
+    }
+
+    #type-navigation-ul li {
+        top: 40px;
+        background: #CCCCCC;
+        border: 1px solid #CEF4FD;
+        display: block;
+        float: left;
+        height: 40px;
+        line-height: 40px;
+        margin: auto;
+        padding: 0;
+        text-align: left;
+        width: 300px;
+    }
+
+    ul#type-navigation-ul li span {
+        background: transparent url(../../../../../../images/mobile/mobile-collapse.png) no-repeat;
+        border-left: 1px solid #99fa99;
+        border-top: 1px solid #99fa99;
+        display: block;
+        height: 49px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 50px;
+    }
+
+
+    ul#type-navigation-ul li a {
+        margin-left: 30px;
+        text-decoration: none;
+        color: #057794;
+    }
+
+    #type-navigation-ul li ul {
+        display: none;
+        left: 0px;
+        margin: 0;
+        padding: 0 0 0 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    ul#type-navigation-ul li ul li {
+        top: 0px;
+        left: 0px;
+        background: #EEEEEE;
+        text-decoration: none;
+        display: block;
+        margin-right: 0px;
+        position: relative;
+        z-index: 2;
+    }
+
+
+
+        ul#type-navigation-ul li ul li a {
+            left: 0px;
+            color: #057794;
+            margin-left: 50px;
+            text-decoration: none;
+            position: relative;
+        }
+
+    #type-navigation-ul li:hover ul {
+        display: none;
+    }
+
+    #footer {
+        text-align: center;
+        background: #4BAFDA;
+        margin: auto;
+        width: 100%;
+        overflow: hidden;
+        float: left;
+    }
+
+    #body {
+        position: relative;
+        float: left;
+    }
+
+
+
+    div#include-photo-1 {
+        margin: auto;
+        overflow-x: hidden; /* 1 */
+        overflow-y: hidden;
+        white-space: nowrap;
+        position: relative;
+    }
+
+
+    div#include-photo {
+        margin: auto;
+        overflow-x: hidden; /* 1 */
+        overflow-y: hidden;
+        white-space: nowrap;
+        position: relative;
+    }
+}
+
+}
+
+@media screen and (max-width : 320px) {
+    #header h1 {
+        font-size: 2.8125em;
+    }
+
+        #header h1 a span {
+            font-size: 0.5em;
+            line-height: 1.25em;
+        }
+
+    #body div#tagline h1 {
+        font-size: 4.375em;
+    }
+
+    #body div#tagline p {
+        font-size: 3.125em;
+    }
+
+    #footer div p {
+        font-size: 1em;
+    }
+}

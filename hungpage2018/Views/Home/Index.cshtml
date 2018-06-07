@@ -1,0 +1,51 @@
+﻿@model hungpage2018.Models.FirstModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section scripts{
+    
+}
+<h2>Index</h2>
+
+
+
+<div id="include-photo-1">
+    <div id="include-photo">
+        <ul>
+            @foreach (var item in Model.home_img)
+            {
+                <li>
+                    <div>
+                        <a href="#"><img id="photo1" src="@item.img_href" alt="" /> </a>
+                        <div id="text">
+                            @item.text
+                        </div>
+
+                    </div>
+                </li>
+
+            }
+
+        </ul>
+    </div>
+
+    <div id="btn-left">
+        <img id="btn-left" src="../images/left.png" alt="" />
+    </div>
+    <div id="btn-right">
+        <img id="btn-right" src="../images/right.png" alt="" />
+    </div>
+
+</div>
+<div>
+    @foreach (var item2 in Model.home_text)
+    {
+        <div>
+            @item2.home_text1
+        </div>
+    }
+</div>
+
